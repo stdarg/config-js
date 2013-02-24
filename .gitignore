@@ -12,3 +12,34 @@ logs
 results
 
 npm-debug.log
+node_modules
+
+# ignore Apple DS Store
+*.DS_Store
+
+# ignore IntelliJ project files
+*.idea
+*.iml
+\#*\#
+
+# ignore the log directry
+logs/
+
+# ignore log files
+*.log
+
+# ignore swap files
+*.swp
+
+# ignore tags file
+tags
+
+# emacs turds
+*~
+
+# pid files
+*.pid
+
+# C temp files
+*.[oa]
+

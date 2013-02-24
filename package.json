@@ -1,0 +1,23 @@
+{
+      "name" : "config.js"
+    , "version" : "0.0.1"
+    , "description" : "A simple config utility for node.js, that uses a single JavaScript file with an export JavaScript object."
+    , "tags" : [ "utilities", "JavaScript", "node.js", "config", "configuration", "simple" ]
+    , "author" : "Edmond Meinfelder <edmond@stdarg.com>"
+    , "maintainers" : "Edmond Meinfelder <edmond@stdarg.com>"
+    , "homepage" : "http://github.com/stdarg/config.js"
+    , "repository" : {
+          "type" : "git"
+        , "url" : "git@github.com:stdarg/config.js.git" }
+    , "bugs" : { "url" : "http://github.com/stdarg/config.js/issues" }
+    , "licenses" : [ {
+          "type" : "MIT"
+        , "url" : "http://opensource.org/licenses/MIT" } ]
+    , "main" : "./lib/config.js"
+    , "scripts" : {"test" : "./node_modules/.bin/mocha --reporter list"}
+    , "engines" : { "node" : ">=v0.6.0" }
+    , "dependencies" : { }
+    , "devDependencies" : {
+              "mocha" : "1.8.1" 
+        }
+}
