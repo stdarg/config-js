@@ -15,9 +15,11 @@
         , "url" : "http://opensource.org/licenses/MIT" } ]
     , "main" : "./lib/config.js"
     , "scripts" : {"test" : "./node_modules/.bin/mocha --reporter list"}
-    , "engines" : { "node" : ">=v0.6.0" }
-    , "dependencies" : { }
+    , "engines" : { "node" : ">=v0.8.0" }
+    , "dependencies" : {
+            "is2" : "0.0.2"
+        }
     , "devDependencies" : {
-              "mocha" : "1.8.1" 
+            "mocha" : "1.8.1"
         }
 }
