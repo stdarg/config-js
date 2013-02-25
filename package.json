@@ -1,15 +1,15 @@
 {
-      "name" : "config.js"
+      "name" : "config-js"
     , "version" : "0.0.1"
     , "description" : "A simple config utility for node.js, that uses a single JavaScript file with an export JavaScript object."
-    , "tags" : [ "utilities", "JavaScript", "node.js", "config", "configuration", "simple" ]
+    , "tags" : [ "utilities", "config", "configuration", "simple" ]
     , "author" : "Edmond Meinfelder <edmond@stdarg.com>"
     , "maintainers" : "Edmond Meinfelder <edmond@stdarg.com>"
-    , "homepage" : "http://github.com/stdarg/config.js"
+    , "homepage" : "http://github.com/stdarg/config-js"
     , "repository" : {
           "type" : "git"
-        , "url" : "git@github.com:stdarg/config.js.git" }
-    , "bugs" : { "url" : "http://github.com/stdarg/config.js/issues" }
+        , "url" : "git@github.com:stdarg/config-js.git" }
+    , "bugs" : { "url" : "http://github.com/stdarg/config-js/issues" }
     , "licenses" : [ {
           "type" : "MIT"
         , "url" : "http://opensource.org/licenses/MIT" } ]
