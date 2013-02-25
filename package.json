@@ -18,6 +18,7 @@
     , "engines" : { "node" : ">=v0.8.0" }
     , "dependencies" : {
             "is2" : "0.0.2"
+          , "const-obj" : "0.0.1"
         }
     , "devDependencies" : {
             "mocha" : "1.8.1"
