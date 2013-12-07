@@ -14,7 +14,6 @@
     "laxcomma"      : true,
     "maxcomplexity" : 39,
     "maxdepth"      : 5,
-    "maxlen"        : 110,
     "maxparams"     : 4,
     "maxstatements" : 100,
     "newcap"        : true,

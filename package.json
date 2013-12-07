@@ -1,6 +1,6 @@
 {
       "name" : "config-js"
-    , "version" : "0.0.1"
+    , "version" : "0.0.3"
     , "description" : "A simple config utility for node.js, that uses a single JavaScript file with an export JavaScript object."
     , "tags" : [ "utilities", "config", "configuration", "simple" ]
     , "author" : "Edmond Meinfelder <edmond@stdarg.com>"
@@ -17,7 +17,7 @@
     , "scripts" : {"test" : "./node_modules/.bin/mocha --reporter list"}
     , "engines" : { "node" : ">=v0.8.0" }
     , "dependencies" : {
-            "is2" : "0.0.2"
+            "is2" : "0.0.3"
           , "const-obj" : "0.0.1"
         }
     , "devDependencies" : {
