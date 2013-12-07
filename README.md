@@ -1,6 +1,5 @@
 config.js
 =========
-
 A simple config utility for node.js, that uses a single JavaScript file with an export
 JavaScript object.
 
@@ -10,7 +9,7 @@ JavaScript object.
 
 ## Examples
 
-  With a configuration file containing:
+With a configuration file containing:
 
     module.exports = {
     
@@ -22,7 +21,8 @@ JavaScript object.
         server : { port : 4201 }
     };
 
-  Using the above configuration files, the following code will not throw and exception:
+Using the above configuration file, the following code will not throw an
+exception:
 
     var Config = require('config-js').Config;
     var config = new Config('./test/cfg_example.js');
@@ -34,7 +34,7 @@ JavaScript object.
 
 ## API
 
-### Config(pathToConfigFile, [region])
+### Config(pathToConfigFile [, region])
 Config provides a simple read-only API to a configuration object.
 
 #### Params: 
@@ -49,7 +49,7 @@ Loads the configuration from the location specified by the parameter.
 
 * **string** *pathToConfigFile* The file name path to the configuration file.
 
-### get(propertyName, defaultValue)
+### get(propertyName [, defaultValue])
 Return the value associated with the specified property. If no such property is
 found, the provided defaultValue will be returned or undefined if no defaultValue
 was provided.
@@ -64,7 +64,7 @@ was provided.
 
 * **The** value found, if no value is found, then the default value. If there is no default value then undefined.
 
-### getByRegion(propertyName, defaultValue)
+### getByRegion(propertyName [, defaultValue])
 Return the region-specific value associated with the specified property. If no such property
 is found, the provided defaultValue will be returned or undefined if no defaultValue
 was provided.  The region should be provided in the constructor to this object.
