@@ -62,7 +62,7 @@ was provided.
 
 #### Returns:
 
-* **The** value found, if no value is found, then the default value. If there is no default value then undefined.
+* The value found, if no value is found, then the default value. If there is no default value then undefined.
 
 ### getByRegion(propertyName [, defaultValue])
 Return the region-specific value associated with the specified property. If no such property
