@@ -1,6 +1,6 @@
 {
       "name" : "config-js"
-    , "version" : "0.0.3"
+    , "version" : "0.0.2"
     , "description" : "A simple config utility for node.js, that uses a single JavaScript file with an export JavaScript object."
     , "tags" : [ "utilities", "config", "configuration", "simple" ]
     , "author" : "Edmond Meinfelder <edmond@stdarg.com>"
