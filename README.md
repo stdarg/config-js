@@ -1,15 +1,17 @@
 config.js
 =========
 A simple config utility for node.js, that uses a single JavaScript file with an export
-JavaScript object.
+JavaScript object. After loading the JavaScript object from the configuration
+file, all properties are set constant, preventing changes. However, if the file
+is changed on disk, it is automatically reloaded.
 
 ## Installation
 
     $ npm install config-js
 
 ## Examples
-
-With a configuration file containing:
+The configuration file should export an object via module exports as seen in the
+following example:
 
     module.exports = {
     
@@ -34,6 +36,37 @@ exception:
     assert.ok(config.get('server/port') === 4201);
     assert.ok(config.get('logging/name') === 'mush.js');
 
+Additionally, the configuration file can have regions:
+
+    module.exports = {
+    
+        en: {
+            welcome: "Welcome to this file."
+        },
+    
+        de: {
+            welcome: "Willkommen zu dieser datei."
+        },
+    
+        es: {
+            welcome: "Bienvenidos a este archivo."
+        }
+    };
+
+The regions can be used with the getByRegion method:
+
+    // if no region is specified, 'en' is assumed.
+    assert.ok(config.getByRegion('welcome') === 'Welcome to this file.');
+
+    // You can change the above assumption in the constructor
+    config = new Config('./test/cfg_example2.js', 'de');
+    assert.ok(config.getByRegion('welcome') === 'Willkommen zu dieser datei.');
+
+    // the get method can still be used
+    assert.ok(config.get('de.welcome') === 'Willkommen zu dieser datei.');
+
+    // and you can always specify the region
+    assert.ok(config.getByRegion('welcome', 'es') === 'Bienvenidos a este archivo.');
 
 ## API
 
