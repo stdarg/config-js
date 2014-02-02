@@ -17,6 +17,7 @@ var assert = require('assert');
 var is = require('is2');
 var fs = require('fs');
 var path = require('path');
+var have = require('have');
 var makeObjConst = require('const-obj').makeObjConst;
 var propPath = require('property-path');
 var defaultSepChr = '.';
@@ -27,13 +28,15 @@ var defaultSepChr = '.';
  * @param {String} [region] Optional indicator for the current region, e.g. 'en'
  */
 function Config(pathToConfigFile, region) {
+    have(arguments, {pathToConfigFile: 'str', region: 'opt str' });
+
+    // complimentary to have arg checking
+    assert.ok(is.nonEmptyStr(pathToConfigFile));
+    assert.ok(fs.existsSync(pathToConfigFile));
+    if (is.defined(region))  assert.ok(is.nonEmptyStr(region));
 
     // english is the default
     if (is.undefined(region)) region = 'en';
-
-    assert.ok(is.nonEmptyStr(pathToConfigFile));
-    assert.ok(fs.existsSync(pathToConfigFile));
-    assert.ok(is.nonEmptyStr(region));
 
     this.pathToConfigFile = pathToConfigFile;
     this.region = region;
@@ -53,6 +56,7 @@ function Config(pathToConfigFile, region) {
  * @param {String} chr The new default character to separate properties in the path string.
  */
 Config.prototype.setSepChr = function(chr) {
+    have(arguments, {chr: 'str'});
     if (is.nonEmptyStr(chr)) {
         defaultSepChr = chr;
         return true;
@@ -66,6 +70,7 @@ Config.prototype.setSepChr = function(chr) {
  * @return {Boolean} true if the new default character was set and false otherwise.
  */
 Config.prototype.loadConfig = function(pathToConfigFile) {
+    have(arguments, {pathToConfigFile: 'str'});
 
     assert.ok(is.nonEmptyStr(pathToConfigFile));
     assert.ok(fs.existsSync(pathToConfigFile));
@@ -91,7 +96,7 @@ Config.prototype.loadConfig = function(pathToConfigFile) {
  * @return The value found, if no value is found, then the default value. If there is no default value then undefined.
  */
 Config.prototype.get = function(propertyName, defaultValue, sep) {
-
+    have(arguments, {propertyName: 'str', sep: 'opt str'});
 
     assert.ok(is.nonEmptyStr(propertyName));
     if (!is.nonEmptyStr(sep))  sep = defaultSepChr;
@@ -115,6 +120,7 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
  * @return The value found, if no value is found, then the default value. If there is no default value, then undefined.
  */
 Config.prototype.getByRegion = function(propertyName, defaultValue, sep) {
+    have(arguments, {propertyName: 'str', sep: 'opt str'});
 
     assert.ok(is.nonEmptyStr(propertyName));
     if (this.region === undefined || propertyName === undefined)

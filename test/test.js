@@ -31,7 +31,12 @@ describe('get()', function() {
         assert.ok(config.get('logging/name', null, '/') === 'mush.js');
 
         // test default sep char method
-        assert.ok(config.setSepChr() === false);
+        try {
+            // should throw
+            assert.ok(config.setSepChr() === false);
+            assert.ok('should not reach here' === false);
+        } catch(err) {
+        }
         assert.ok(config.setSepChr('') === false);
         assert.ok(config.setSepChr('/') === true);
         assert.ok(config.get('server/port') === 4201);

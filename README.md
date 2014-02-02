@@ -1,9 +1,14 @@
 config.js
 =========
-A simple config utility for node.js, that uses a single JavaScript file with an export
-JavaScript object. After loading the JavaScript object from the configuration
-file, all properties are set constant, preventing changes. However, if the file
-is changed on disk, it is automatically reloaded.
+A simple config utility for node.js, that uses a single JavaScript file with an
+export JavaScript object. After loading the JavaScript object from the
+configuration file, all properties are set constant, preventing changes.
+However, if the file is changed on disk, it is automatically reloaded.
+
+config.js uses have to valid arguments passed to it. If you pass incorrect
+arguement typs, have will throw. You should not wrap your calls in try/catch
+handlers, but test the inputs you are using. The logic is, if you are not
+passing the correct types, it's a bug to fix not a run-time situation to handle.
 
 ## Installation
 
