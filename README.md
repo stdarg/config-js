@@ -5,7 +5,7 @@ export JavaScript object. After loading the JavaScript object from the
 configuration file, all properties are set constant, preventing changes.
 However, if the file is changed on disk, it is automatically reloaded.
 
-config.js uses have to validte arguments passed to it. If you pass incorrect
+config.js uses "have" to validate arguments passed to it. If you pass incorrect
 arguement types, have will throw. You should not wrap your calls in try/catch
 handlers, but test the inputs you are using. The logic is, if you are not
 passing the correct types, it's a bug to fix not a run-time situation to handle.
