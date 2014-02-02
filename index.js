@@ -18,11 +18,13 @@ var is = require('is2');
 var fs = require('fs');
 var path = require('path');
 var makeObjConst = require('const-obj').makeObjConst;
+var propPath = require('property-path');
+var defaultSepChr = '.';
 
 /**
  * Config provides a simple read-only API to a configuration object.
  * @param {String} pathToConfigFile The configuration file
- * @param {String} [region] An optional indicator for the current region (e.g. 'US','JP').
+ * @param {String} [region] Optional indicator for the current region, e.g. 'en'
  */
 function Config(pathToConfigFile, region) {
 
@@ -47,8 +49,21 @@ function Config(pathToConfigFile, region) {
 }
 
 /**
+ * Set the default separator character used for property strings.
+ * @param {String} chr The new default character to separate properties in the path string.
+ */
+Config.prototype.setSepChr = function(chr) {
+    if (is.nonEmptyStr(chr)) {
+        defaultSepChr = chr;
+        return true;
+    }
+    return false;
+};
+
+/**
  * Loads the configuration from the location specified by the parameter.
  * @param {string} pathToConfigFile The file name path to the configuration file.
+ * @return {Boolean} true if the new default character was set and false otherwise.
  */
 Config.prototype.loadConfig = function(pathToConfigFile) {
 
@@ -75,24 +90,17 @@ Config.prototype.loadConfig = function(pathToConfigFile) {
  * @param {string} defaultValue A default value to use in case no property having propertyName was found.
  * @return The value found, if no value is found, then the default value. If there is no default value then undefined.
  */
-Config.prototype.get = function(propertyName, defaultValue) {
+Config.prototype.get = function(propertyName, defaultValue, sep) {
+
 
     assert.ok(is.nonEmptyStr(propertyName));
+    if (!is.nonEmptyStr(sep))  sep = defaultSepChr;
 
     if (!is.nonEmptyString(propertyName))
         return defaultValue || null;
 
-    var properties = propertyName.split('.');
-    var currVal = this.configObj;
-
-    for (var i=0; i<properties.length; i++) {
-        var currPropertyName = properties[i];
-        if (!currVal.hasOwnProperty(currPropertyName))
-            return defaultValue;
-        currVal = currVal[currPropertyName];
-    }
-
-    var isValid = 'undefined'!==typeof currVal&&null!==currVal;
+    var currVal = propPath.get(this.configObj, propertyName, sep);
+    var isValid = ('undefined'!==typeof currVal && null!==currVal);
     return isValid ? currVal : defaultValue;
 };
 
@@ -106,13 +114,12 @@ Config.prototype.get = function(propertyName, defaultValue) {
  * @param {String} defaultValue A default value to use in case no property having propertyName was found.
  * @return The value found, if no value is found, then the default value. If there is no default value, then undefined.
  */
-Config.prototype.getByRegion = function(propertyName, defaultValue) {
+Config.prototype.getByRegion = function(propertyName, defaultValue, sep) {
 
     assert.ok(is.nonEmptyStr(propertyName));
     if (this.region === undefined || propertyName === undefined)
         return defaultValue;
 
     propertyName = this.region + '.' + propertyName;
-    return this.get(propertyName, defaultValue);
+    return this.get(propertyName, defaultValue, sep);
 };
-
