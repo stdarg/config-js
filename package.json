@@ -1,26 +1,41 @@
 {
-      "name" : "config-js"
-    , "version" : "0.0.2"
-    , "description" : "A simple config utility for node.js, that uses a single JavaScript file with an export JavaScript object."
-    , "tags" : [ "utilities", "config", "configuration", "simple" ]
-    , "author" : "Edmond Meinfelder <edmond@stdarg.com>"
-    , "maintainers" : "Edmond Meinfelder <edmond@stdarg.com>"
-    , "homepage" : "http://github.com/stdarg/config-js"
-    , "repository" : {
-          "type" : "git"
-        , "url" : "git@github.com:stdarg/config-js.git" }
-    , "bugs" : { "url" : "http://github.com/stdarg/config-js/issues" }
-    , "licenses" : [ {
-          "type" : "MIT"
-        , "url" : "http://opensource.org/licenses/MIT" } ]
-    , "main" : "./lib/config.js"
-    , "scripts" : {"test" : "./node_modules/.bin/mocha --reporter list"}
-    , "engines" : { "node" : ">=v0.8.0" }
-    , "dependencies" : {
-            "is2" : "0.0.3"
-          , "const-obj" : "0.0.1"
-        }
-    , "devDependencies" : {
-            "mocha" : "1.8.1"
-        }
+  "name": "config-js",
+  "version": "0.0.3",
+  "description": "A simple config module. Support for regions and auto-load when file changes.",
+  "keywords": [
+    "config",
+    "configuration",
+    "simple",
+    "region",
+    "const",
+    "constant",
+    "regions"
+  ],
+  "author": "Edmond Meinfelder <edmond@stdarg.com>",
+  "maintainers": "Edmond Meinfelder <edmond@stdarg.com>",
+  "homepage": "http://github.com/stdarg/config-js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:stdarg/config-js.git"
+  },
+  "bugs": {
+    "url": "http://github.com/stdarg/config-js/issues"
+  },
+  "license": "MIT",
+  "main": "./index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter list ./test/test.js"
+  },
+  "engines": {
+    "node": ">=v0.8.0"
+  },
+  "dependencies": {
+    "is2": "0.0.12",
+    "have": "0.2.3",
+    "const-obj": "0.0.3",
+    "property-path": "0.0.5"
+  },
+  "devDependencies": {
+    "mocha": "1.17.1"
+  }
 }
