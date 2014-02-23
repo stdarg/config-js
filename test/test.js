@@ -1,6 +1,6 @@
 'use strict';
 var assert = require('assert');
-var Config = require('../index').Config;
+var Config = require('../index');
 
 describe('Config()', function() {
     it('Should throw if pathToConfigFile is an empty string', function() {
@@ -61,5 +61,14 @@ describe('getByRegion()', function() {
         config = new Config('./test/cfg_example2.js', 'es');
         assert.ok(config.getByRegion('welcome') === 'Bienvenidos a este archivo.');
         assert.ok(config.get('es.welcome') === 'Bienvenidos a este archivo.');
+    });
+});
+
+describe('Config()', function() {
+    it('Should subst \'##\' wth contents of NODE_ENV env var ', function() {
+        var config;
+        process.env.NODE_ENV = 'PRODUCTION';
+        config = new Config('./test/cfg_example_##.js');
+        assert.ok(config.get('production') === true);
     });
 });

@@ -1,9 +1,19 @@
 config.js
 =========
-A simple config utility for node.js, that uses a single JavaScript file with an
-export JavaScript object. After loading the JavaScript object from the
-configuration file, all properties are set constant, preventing changes.
-However, if the file is changed on disk, it is automatically reloaded.
+A config utility for node.js, that uses a single JavaScript file with an export
+JavaScript object. After loading the JavaScript object from the configuration
+file, all properties are set constant, preventing changes.  However, if the file
+is changed on disk, it is automatically reloaded.
+
+There is support for environment targets. If you have the environment variable
+`NODE_ENV` set and you have '##' in your file path, config.js substitutes the
+'##' with the contents of `NODE_ENV` and then loads that file. If you have a
+file named `./conf/app_PRODUCTION.js`, you would load it like so:
+
+    process.env.NODE_ENV = 'PRODUCTION';
+    var Config = require('config-js');
+    var config = new Config('./conf/app_##');
+
 
 config.js uses "have" to validate arguments passed to it. If you pass incorrect
 arguement types, have will throw. You should not wrap your calls in try/catch
@@ -31,7 +41,7 @@ following example:
 Using the above configuration file, the following code will not throw an
 exception:
 
-    var Config = require('config-js').Config;
+    var Config = require('config-js');
     var config = new Config('./test/cfg_example.js');
     assert.ok(config.get('server.port') === 4201);
     assert.ok(config.get('logging.name') === 'mush.js');

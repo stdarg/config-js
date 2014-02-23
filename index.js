@@ -1,6 +1,6 @@
 /*!
- * A very simple configuration utility, that uses a JavaScript file as a config. The '.js' file
- * must have the config data in module.exports, e.g.:
+ * A very simple configuration utility, that uses a JavaScript file as a
+* config. The '.js' file must have the config data in module.exports, e.g.:
  *
  * module.exports = {
  *     region : 'US',
@@ -10,8 +10,7 @@
  */
 'use strict';
 
-exports.name = 'config.js';
-exports.Config = Config;
+module.exports = Config;
 
 var assert = require('assert');
 var is = require('is2');
@@ -27,8 +26,17 @@ var defaultSepChr = '.';
  * @param {String} pathToConfigFile The configuration file
  * @param {String} [region] Optional indicator for the current region, e.g. 'en'
  */
-function Config(pathToConfigFile, region) {
+function Config(pathToConfigFileIn, region) {
     have(arguments, {pathToConfigFile: 'str', region: 'opt str' });
+
+    // if the path has '##' and process.env.NODE_ENV is a non-empty string,
+    // replace '##' with the contents of process.env.NODE_ENV
+    var pathToConfigFile = pathToConfigFileIn;
+    var idx = pathToConfigFileIn.indexOf('##');
+    if (idx > -1 && is.nonEmptyStr(process.env.NODE_ENV)) {
+        pathToConfigFile = pathToConfigFileIn.substr(0, idx) +
+            process.env.NODE_ENV + pathToConfigFileIn.substr(idx+2);
+    }
 
     // complimentary to have arg checking
     assert.ok(is.nonEmptyStr(pathToConfigFile));
