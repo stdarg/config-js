@@ -9,6 +9,8 @@
     "region",
     "const",
     "constant",
+    "target",
+    "targets",
     "regions"
   ],
   "author": "Edmond Meinfelder <edmond@stdarg.com>",
