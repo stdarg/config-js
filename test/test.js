@@ -21,15 +21,34 @@ describe('Config()', function() {
 });
 
 describe('get()', function() {
-    it('Should retrieve values from the configuration file', function() {
-        var config = new Config('./test/cfg_example.js');
+    var config = new Config('./test/cfg_example.js');
+    it('Should retrieve values from the configuration file and default val', function() {
         assert.ok(config.get('server.port') === 4201);
         assert.ok(config.get('logging.name') === 'mush.js');
+
+        // test default.js value add
+        assert.ok(config.get('mush.name') === 'mush.js');
+        //assert.ok(config.get('mush.defaultVal') === 'Hi default');
+        assert.ok(config.get('defaultTest.working') === true);
 
         // test sep char arguement
         assert.ok(config.get('server/port', null, '/') === 4201);
         assert.ok(config.get('logging/name', null, '/') === 'mush.js');
+    });
 
+    it('Should retrieve values from the environment', function() {
+        process.env.LOGGING_NAME = 'edmond.log';
+        assert.ok(config.get('logging.name') === 'edmond.log');
+        assert.ok(config.get('LOGGING.NAME') === 'edmond.log');
+        assert.ok(config.get('LOGGING_NAME') === 'edmond.log');
+        delete process.env.LOGGING_NAME;
+    });
+
+    it('Should throw when no value is available', function() {
+        assert.throws(function() { config.get('blogging.name'); });
+    });
+
+    it('Should retrieve values from  with different sep chars', function() {
         // test default sep char method
         try {
             // should throw

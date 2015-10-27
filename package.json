@@ -1,6 +1,6 @@
 {
   "name": "config-js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple config module. Support for regions and auto-load when file changes.",
   "keywords": [
     "config",
@@ -32,12 +32,14 @@
     "node": ">=v0.8.0"
   },
   "dependencies": {
-    "is2": "0.0.12",
-    "have": "0.2.3",
-    "const-obj": "0.0.3",
-    "property-path": "0.0.5"
+    "const-obj": "^0.0.4",
+    "debug": "^2.2.0",
+    "have": "^0.3.0",
+    "is2": "^1.0.1",
+    "lodash.assign": "^3.2.0",
+    "property-path": "^0.0.5"
   },
   "devDependencies": {
-    "mocha": "1.17.1"
+    "mocha": "^2.3.3"
   }
 }

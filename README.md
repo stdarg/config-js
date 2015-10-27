@@ -20,6 +20,18 @@ arguement types, have will throw. You should not wrap your calls in try/catch
 handlers, but test the inputs you are using. The logic is, if you are not
 passing the correct types, it's a bug to fix not a run-time situation to handle.
 
+## Features
+
+* Support for multiple configuration files using NODE_ENV
+* Support for an optional defaults file that is overritten by target config
+    * The file, defaults.js must be next to the target config file(s)
+* Configurable separation character to specify value in object path
+* If an ENVIRONMENT variable exists in all upper case with the sep character
+  relpaced by underscores, e.g. `_` Then the environment variable overrides any
+  values in the configuration files.
+* On a get, if there is no matching environment variable, no config file value,
+  default config value, or default agrgument, the function throws.
+
 ## Installation
 
     $ npm install config-js

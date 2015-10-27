@@ -20,6 +20,8 @@ var have = require('have');
 var makeObjConst = require('const-obj').makeObjConst;
 var propPath = require('property-path');
 var defaultSepChr = '.';
+var debug = require('debug')('config-js');
+var assign = require('lodash.assign');
 
 /**
  * Config provides a simple read-only API to a configuration object.
@@ -28,6 +30,7 @@ var defaultSepChr = '.';
  */
 function Config(pathToConfigFileIn, region) {
     have(arguments, {pathToConfigFile: 'str', region: 'opt str' });
+    debug('pathToConfigFileIn: '+pathToConfigFileIn);
 
     // if the path has '##' and process.env.NODE_ENV is a non-empty string,
     // replace '##' with the contents of process.env.NODE_ENV
@@ -46,17 +49,22 @@ function Config(pathToConfigFileIn, region) {
     // english is the default
     if (is.undefined(region)) region = 'en';
 
+    debug('## sub: pathToConfigFileIn: '+pathToConfigFileIn);
+    this.pathToDefaults = path.join(path.dirname(pathToConfigFileIn),
+                                    'defaults.js');
     this.pathToConfigFile = pathToConfigFile;
+    debug('region: '+region);
     this.region = region;
     var self = this;
+    debug('pathToDeafults: '+this.pathToDefaults);
 
     // set a watch for when the file changes, to reload the file.
     fs.watchFile(this.pathToConfigFile, function () {
-        self.loadConfig(self.pathToConfigFile, self.region);
+        self.loadConfig(self.pathToDefaults, self.pathToConfigFile, self.region);
     });
 
     // we can't wait for the file to change to re-load, so we load it now
-    this.loadConfig(this.pathToConfigFile, this.region);
+    this.loadConfig(self.pathToDefaults, self.pathToConfigFile, self.region);
 }
 
 /**
@@ -77,17 +85,42 @@ Config.prototype.setSepChr = function(chr) {
  * @param {string} pathToConfigFile The file name path to the configuration file.
  * @return {Boolean} true if the new default character was set and false otherwise.
  */
-Config.prototype.loadConfig = function(pathToConfigFile) {
-    have(arguments, {pathToConfigFile: 'str'});
+Config.prototype.loadConfig = function(pathToDefaults, pathToConfigFile) {
+    have(arguments, {pathToDefaults: 'str', pathToConfigFile: 'str'});
 
+    assert.ok(is.nonEmptyStr(pathToDefaults));
     assert.ok(is.nonEmptyStr(pathToConfigFile));
     assert.ok(fs.existsSync(pathToConfigFile));
-
+    pathToDefaults = path.resolve(pathToDefaults);
     pathToConfigFile = path.resolve(pathToConfigFile);
+
+    var defaults = {};
+    if (fs.existsSync(pathToDefaults)) {
+        // if present, remove the defaults
+        if (require.cache[pathToDefaults])
+            delete require.cache[pathToDefaults];
+        try {
+            defaults = require(pathToDefaults);
+        } catch(err) {
+            // do nothing on purpose - it just a default
+            debug('Could not load default config: "'+pathToConfigFile+'"');
+        }
+    }
+    // Now defaults is either a JS object with config or empty
+
+    // now remove, if present, the target config
     if (require.cache[pathToConfigFile])
         delete require.cache[pathToConfigFile];
 
-    this.configObj = require(pathToConfigFile);
+    var targetConfig = {};
+    try {
+        targetConfig = require(pathToConfigFile);
+    } catch(err) {
+        debug('Could not load target config: "'+pathToConfigFile+'"');
+    }
+
+    // now overwrite defaults with target config
+    this.configObj = assign(defaults, targetConfig);
     if (!this.region && this.configObj && this.configObj.region)
         this.region = this.configObj.region;
 
@@ -112,8 +145,32 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
     if (!is.nonEmptyString(propertyName))
         return defaultValue || null;
 
+    // Try to get value from environemnt first
+    // We convert name to upper case and if '.' is used as a sep char,
+    // replace with "_", so 'logging.name' becomes "LOGGING_NAME"
+    var envPropName;
+    if (sep === '.')
+        envPropName = propertyName.replace(/\./g, '_');
+    else
+        envPropName = propertyName.replace(new RegExp(sep, 'g'), '_');
+
+    if (!is.nonEmptyStr(envPropName)) {
+        debug('Could not remove "."s from '+ propertyName);
+    } else {
+        envPropName = envPropName.toUpperCase();
+    }
+    if (process.env[envPropName]) {
+        return process.env[envPropName];
+    }
+
     var currVal = propPath.get(this.configObj, propertyName, sep);
     var isValid = ('undefined'!==typeof currVal && null!==currVal);
+
+    // invalid value found and no defaukt value, then we throw an error
+    if (!isValid && typeof defaultValue === 'undefined')
+        throw new Error('No config value found');
+
+    // either return found value or default
     return isValid ? currVal : defaultValue;
 };
 
