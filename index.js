@@ -45,7 +45,7 @@ function Config(pathToConfigFileIn, region) {
     if (!is.nonEmptyStr(pathToConfigFile))
         throw new Error('Bad path to config file: '+pathToConfigFile);
     if (!fs.existsSync(pathToConfigFile))
-        throw new Error('Config file is misisng: '+pathToConfigFile);
+        throw new Error('Config file is missing: '+pathToConfigFile);
     if (is.defined(region))  assert.ok(is.nonEmptyStr(region));
 
     // english is the default
