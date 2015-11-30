@@ -42,6 +42,7 @@ function Config(pathToConfigFileIn, region) {
     }
 
     // complimentary to have arg checking
+    debug('Checking pathToConfigFile '+pathToConfigFile);
     assert.ok(is.nonEmptyStr(pathToConfigFile));
     assert.ok(fs.existsSync(pathToConfigFile));
     if (is.defined(region))  assert.ok(is.nonEmptyStr(region));
@@ -159,19 +160,41 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
     } else {
         envPropName = envPropName.toUpperCase();
     }
+
+    var fromEnv = false;
+    var envStr;
     if (process.env[envPropName]) {
-        return process.env[envPropName];
+        fromEnv = true;
+        envStr = process.env[envPropName];
     }
 
     var currVal = propPath.get(this.configObj, propertyName, sep);
     var isValid = ('undefined'!==typeof currVal && null!==currVal);
 
     // invalid value found and no defaukt value, then we throw an error
-    if (!isValid && typeof defaultValue === 'undefined')
+    if (!isValid && typeof defaultValue === 'undefined' && !fromEnv)
         throw new Error('No config value found');
 
     // either return found value or default
-    return isValid ? currVal : defaultValue;
+    if (!fromEnv) {
+        return isValid ? currVal : defaultValue;
+    } else {
+        if (is.num(currVal)) {
+            return Number(envStr);
+        } else if (is.array(currVal)) {
+            if (/^\[(.)*\]$/.match(envStr)) {
+                envStr = envStr.substr(1);  // remove '['
+                envStr = envStr.substring(0, envStr.length-1);
+                var elems = envStr.split(',');
+                for (var i=0; i<currVal.length; i++) {
+                    if (typeof currVal[i] === 'number')
+                        elems[i] = Number(elems[i]);
+                }
+                return elems;
+            }
+            return envStr;
+        }
+    }
 };
 
 /**
