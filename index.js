@@ -42,9 +42,10 @@ function Config(pathToConfigFileIn, region) {
     }
 
     // complimentary to have arg checking
-    debug('Checking pathToConfigFile '+pathToConfigFile);
-    assert.ok(is.nonEmptyStr(pathToConfigFile));
-    assert.ok(fs.existsSync(pathToConfigFile));
+    if (!is.nonEmptyStr(pathToConfigFile))
+        throw new Error('Bad path to config file: '+pathToConfigFile);
+    if (!fs.existsSync(pathToConfigFile))
+        throw new Error('Config file is misisng: '+pathToConfigFile);
     if (is.defined(region))  assert.ok(is.nonEmptyStr(region));
 
     // english is the default
