@@ -185,6 +185,7 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
         debug('Propery '+envPropName+' gotten from config file: ',(isValid ? currVal : defaultValue));
         return isValid ? currVal : defaultValue;
     } else {
+        debug('Attempting to coercion checks.');
         if (is.num(currVal)) {
             debug('Coercing env '+envPropName+' to a numeric.');
             return Number(envStr);
@@ -200,9 +201,9 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
                 }
                 return elems;
             }
-            debug('Returning env '+envPropName+': '+envStr);
-            return envStr;
+            debug('No coercion done '+envPropName+': '+envStr);
         }
+        return envStr;
     }
 };
 
