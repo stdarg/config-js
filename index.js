@@ -67,6 +67,8 @@ function Config(pathToConfigFileIn, region) {
 
     // we can't wait for the file to change to re-load, so we load it now
     this.loadConfig(self.pathToDefaults, self.pathToConfigFile, self.region);
+    var util = require('util');
+    debug('Config: '+util.inspect(this.configObj));
 }
 
 /**
