@@ -176,9 +176,12 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
     var currVal = propPath.get(this.configObj, propertyName, sep);
     var isValid = ('undefined'!==typeof currVal && null!==currVal);
 
-    // invalid value found and no defaukt value, then we throw an error
-    if (!isValid && typeof defaultValue === 'undefined' && !fromEnv)
-        throw new Error('No config value found');
+    // invalid value found and no default value, then we throw an error
+    if (!isValid && typeof defaultValue === 'undefined' && !fromEnv) {
+        debug('Var statuses ','!isValid',!isValid,'typeof defaultValue',
+              typeof defaultValue, '!fromEnv',!fromEnv);
+        throw new Error('No config value found for: '+propertyName);
+    }
 
     // either return found value or default
     if (!fromEnv) {
