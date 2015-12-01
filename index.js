@@ -142,6 +142,7 @@ Config.prototype.loadConfig = function(pathToDefaults, pathToConfigFile) {
  */
 Config.prototype.get = function(propertyName, defaultValue, sep) {
     have(arguments, {propertyName: 'str', sep: 'opt str'});
+    debug('config.get of '+propertyName+', def='+defaultValue+', sep='+sep);
 
     assert.ok(is.nonEmptyStr(propertyName));
     if (!is.nonEmptyStr(sep))  sep = defaultSepChr;
@@ -169,6 +170,7 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
     if (process.env[envPropName]) {
         fromEnv = true;
         envStr = process.env[envPropName];
+        debug('Propery '+envPropName+' found in environment: '+process.env[envPropName]);
     }
 
     var currVal = propPath.get(this.configObj, propertyName, sep);
@@ -180,6 +182,7 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
 
     // either return found value or default
     if (!fromEnv) {
+        debug('Propery '+envPropName+' gotten from config file: ',(isValid ? currVal : defaultValue));
         return isValid ? currVal : defaultValue;
     } else {
         if (is.num(currVal)) {
