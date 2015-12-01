@@ -186,8 +186,10 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
         return isValid ? currVal : defaultValue;
     } else {
         if (is.num(currVal)) {
+            debug('Coercing env '+envPropName+' to a numeric.');
             return Number(envStr);
         } else if (is.array(currVal)) {
+            debug('Coercing env '+envPropName+' to an array.');
             if (/^\[(.)*\]$/.match(envStr)) {
                 envStr = envStr.substr(1);  // remove '['
                 envStr = envStr.substring(0, envStr.length-1);
@@ -198,6 +200,7 @@ Config.prototype.get = function(propertyName, defaultValue, sep) {
                 }
                 return elems;
             }
+            debug('Returning env '+envPropName+': '+envStr);
             return envStr;
         }
     }
