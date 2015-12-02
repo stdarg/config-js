@@ -21,7 +21,8 @@ var makeObjConst = require('const-obj').makeObjConst;
 var propPath = require('property-path');
 var defaultSepChr = '.';
 var debug = require('debug')('config-js');
-var assign = require('lodash.assign');
+var merge = require('lodash.merge');
+var util = require('util');
 
 /**
  * Config provides a simple read-only API to a configuration object.
@@ -100,16 +101,21 @@ Config.prototype.loadConfig = function(pathToDefaults, pathToConfigFile) {
 
     var defaults = {};
     if (fs.existsSync(pathToDefaults)) {
+        debug('defaults file found: '+pathToDefaults);
         // if present, remove the defaults
         if (require.cache[pathToDefaults])
             delete require.cache[pathToDefaults];
         try {
             defaults = require(pathToDefaults);
+            debug('defaults file required');
         } catch(err) {
             // do nothing on purpose - it just a default
             debug('Could not load default config: "'+pathToConfigFile+'"');
         }
+    } else {
+        debug('defaults file NOT found: '+pathToDefaults);
     }
+    debug('defaults object: ',util.inspect(defaults, {depth: null}));
     // Now defaults is either a JS object with config or empty
 
     // now remove, if present, the target config
@@ -119,14 +125,17 @@ Config.prototype.loadConfig = function(pathToDefaults, pathToConfigFile) {
     var targetConfig = {};
     try {
         targetConfig = require(pathToConfigFile);
+        debug('Required config: '+pathToConfigFile);
     } catch(err) {
         debug('Could not load target config: "'+pathToConfigFile+'"');
     }
+    debug('config object: ',util.inspect(targetConfig, {depth: null}));
 
     // now overwrite defaults with target config
-    this.configObj = assign(defaults, targetConfig);
+    this.configObj = merge(defaults, targetConfig);
     if (!this.region && this.configObj && this.configObj.region)
         this.region = this.configObj.region;
+    debug('resulting config: ',util.inspect(this.configObj, {depth: null}));
 
     makeObjConst(this.configObj);
 };
