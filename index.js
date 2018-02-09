@@ -62,7 +62,7 @@ function Config(pathToConfigFileIn, region) {
     debug('pathToDeafults: '+this.pathToDefaults);
 
     // set a watch for when the file changes, to reload the file.
-    fs.watchFile(this.pathToConfigFile, function () {
+    fs.watchFile(this.pathToConfigFile, {persistent: false}, function () {
         self.loadConfig(self.pathToDefaults, self.pathToConfigFile, self.region);
     });
 
