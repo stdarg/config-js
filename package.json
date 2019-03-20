@@ -37,7 +37,7 @@
     "have": "^0.3.0",
     "is2": "^1.0.1",
     "lodash.merge": "^3.3.2",
-    "property-path": "^0.0.5"
+    "property-path": "^0.0.6"
   },
   "devDependencies": {
     "mocha": "^2.3.3"
