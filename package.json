@@ -1,6 +1,6 @@
 {
   "name": "config-js",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "description": "A simple config module. Support for regions and auto-load when file changes.",
   "keywords": [
     "config",
