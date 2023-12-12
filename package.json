@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "const-obj": "^0.0.4",
-    "debug": "4.1.1",
+    "debug": "4.3.1",
     "have": "0.4.0",
     "is2": "2.0.4",
     "lodash.merge": "4.6.2",
